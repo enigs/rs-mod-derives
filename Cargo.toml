@@ -1,0 +1,14 @@
+[package]
+name = "derives"
+version = "0.0.1"
+edition = "2024"
+authors = ["markhenry.liwag@gmail.com"]
+
+[dependencies]
+derive_utils = { path = "derive_utils" }
+encryption_derive = { path = "encryption_derive" }
+enums_derive = { path = "enums_derive" }
+form_derive = { path = "form_derive" }
+is_empty_derive = { path = "is_empty_derive" }
+jsonb_derive = { path = "jsonb_derive" }
+postgresql_derive = { path = "postgresql_derive" }

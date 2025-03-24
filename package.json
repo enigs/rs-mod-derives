@@ -1,0 +1,12 @@
+{
+  "name": "derives",
+  "version": "1.0.0",
+  "scripts": {
+    "clippy": "cargo clippy -- -D warnings",
+    "deps": "cargo +nightly udeps --all-targets --all-features",
+    "dev": "cargo watch -x 'run'",
+    "graph": "cargo depgraph --all-deps --dedup-transitive-deps --workspace-only | dot -Tpng > graph.png"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
