@@ -316,7 +316,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 use nulls::Null;
                 use sqlx::{Result, Row, postgres::PgRow};
 
-                use crate::#node;
+                use crate::schemas::#node;
 
                 pub fn parse(row: &PgRow) -> #node {
                     #node::#k(row)
@@ -386,7 +386,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
             use nulls::Null;
             use sqlx::{Result, Row, postgres::PgRow};
 
-            use crate::#node;
+            use crate::schemas::#node;
 
             pub fn parse(row: &PgRow) -> #node {
                 #node::parse(row)
