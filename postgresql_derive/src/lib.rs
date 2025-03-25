@@ -116,7 +116,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
         all_setter_opts.push(quote::quote! {
             pub fn #setter_opt_name(mut self, value: &Option<#inner_ty>) -> Self {
                 if let Some(value) = value.clone() {
-                    self.#field = libs::nulls::new(value);
+                    self.#field = nulls::new(value);
                 }
 
                 self
@@ -131,7 +131,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
             "String" => {
                 all_setters.push(quote::quote! {
                     pub fn #setter_name<T: ToString>(mut self, value: T) -> Self {
-                        self.#field = libs::nulls::new(value.to_string());
+                        self.#field = nulls::new(value.to_string());
 
                         self
                     }
@@ -146,7 +146,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                             .filter(|s| !s.is_empty())
                             .collect();
 
-                        self.#field = libs::nulls::new(value);
+                        self.#field = nulls::new(value);
 
                         self
                     }
@@ -155,7 +155,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
             _ => {
                 all_setters.push(quote::quote! {
                     pub fn #setter_name(mut self, value: #inner_ty) -> Self {
-                        self.#field = libs::nulls::new(value);
+                        self.#field = nulls::new(value);
 
                         self
                     }
@@ -176,13 +176,13 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
 
                     if id.is_empty() {
                         let id = match size.to_lowercase().as_str() {
-                            "sm" => libs::ids::sm(),
-                            "md" => libs::ids::md(),
-                            "lg" => libs::ids::lg(),
-                            _ => libs::ids::max(),
+                            "sm" => ids::sm(),
+                            "md" => ids::md(),
+                            "lg" => ids::lg(),
+                            _ => ids::max(),
                         };
 
-                        self.id = libs::nulls::new(id.to_string());
+                        self.id = nulls::new(id.to_string());
                     }
 
                     self
@@ -215,7 +215,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
             all_cleable_fields.push(field.clone());
             all_clears.push(quote::quote! {
                 pub fn #clear_name(mut self) -> Self {
-                    self.#field = libs::nulls::undefined();
+                    self.#field = nulls::undefined();
 
                     self
                 }
@@ -304,7 +304,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 let mut data = Self::default();
 
                 #(
-                    data.#fields = libs::nulls::Null::from(row.try_get::<#inner_ty, &str>(#aliases));
+                    data.#fields = nulls::Null::from(row.try_get::<#inner_ty, &str>(#aliases));
                 )*
 
                 data
@@ -313,7 +313,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
 
         sub_parser_mod.push(quote::quote!{
             pub mod #module {
-                use libs::nulls::Null;
+                use nulls::Null;
                 use sqlx::{Result, Row, postgres::PgRow};
 
                 use crate::#node;
@@ -322,13 +322,13 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                     #node::#k(row)
                 }
 
-                pub fn result(row: Result<sqlx::postgres::PgRow>) -> libs::responder::Result<#node> {
-                    let result = row.map_err(libs::responder::query)?;
+                pub fn result(row: Result<sqlx::postgres::PgRow>) -> responder::Result<#node> {
+                    let result = row.map_err(responder::query)?;
                     let row = parse(&result);
 
                     match !row.is_empty() {
                         true => Ok(row),
-                        false => Err(libs::responder::to(#error))
+                        false => Err(responder::to(#error))
                     }
                 }
 
@@ -336,8 +336,8 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                     let row = parse(row);
 
                     match row.is_empty() {
-                        true => libs::nulls::undefined(),
-                        false => libs::nulls::new(row)
+                        true => nulls::undefined(),
+                        false => nulls::new(row)
                     }
                 }
             }
@@ -383,7 +383,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
         }
 
         pub mod parsers {
-            use libs::nulls::Null;
+            use nulls::Null;
             use sqlx::{Result, Row, postgres::PgRow};
 
             use crate::#node;
@@ -392,13 +392,13 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 #node::parse(row)
             }
 
-            pub fn result(row: Result<sqlx::postgres::PgRow>) -> libs::responder::Result<#node> {
-                let result = row.map_err(libs::responder::query)?;
+            pub fn result(row: Result<sqlx::postgres::PgRow>) -> responder::Result<#node> {
+                let result = row.map_err(responder::query)?;
                 let row = parse(&result);
 
                 match !row.is_empty() {
                     true => Ok(row),
-                    false => Err(libs::responder::to(#error))
+                    false => Err(responder::to(#error))
                 }
             }
 
@@ -406,8 +406,8 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 let row = parse(row);
 
                 match row.is_empty() {
-                    true => libs::nulls::undefined(),
-                    false => libs::nulls::new(row)
+                    true => nulls::undefined(),
+                    false => nulls::new(row)
                 }
             }
 
@@ -453,7 +453,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
             pub fn clear_all(mut self) -> Self {
                 #(
                     if !self.#all_cleable_fields.is_some() {
-                        self.#all_cleable_fields =  libs::nulls::undefined();
+                        self.#all_cleable_fields =  nulls::undefined();
                     }
                 )*
 
@@ -466,7 +466,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 let mut data = Self::default();
 
                 #(
-                    data.#all_attributed_fields = libs::nulls::Null::from(row.try_get::<#all_attributed_inner_ty, &str>(#all_attributed_renamed));
+                    data.#all_attributed_fields = nulls::Null::from(row.try_get::<#all_attributed_inner_ty, &str>(#all_attributed_renamed));
                 )*
 
 
@@ -475,7 +475,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
 
             #(#sub_parsers)*
 
-            pub async fn update(&self) -> libs::responder::Result<Self> {
+            pub async fn update(&self) -> responder::Result<Self> {
                 let mut index = 0;
                 let mut updates = Vec::<String>::new();  // Specify type explicitly
 
@@ -500,7 +500,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 )*
 
                 query = query.bind(self.id());
-                parsers::result(query.fetch_one(database::writer()).await)
+                parsers::result(query.fetch_one(services::database::writer()).await)
             }
         }
 
