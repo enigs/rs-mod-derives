@@ -500,7 +500,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 )*
 
                 query = query.bind(self.id());
-                parsers::result(query.fetch_one(services::database::writer()).await)
+                parsers::result(query.fetch_one(database::writer()).await)
             }
         }
 
