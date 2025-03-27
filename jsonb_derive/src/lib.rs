@@ -31,8 +31,8 @@ pub fn main(stream: TokenStream) -> TokenStream {
             ///
             /// # Returns
             /// - `Ok(Self)` if the value is successfully extracted.
-            /// - `Err(libs::responder::to(Self))` if the value cannot be extracted.
-            pub fn row<T>(value: &sqlx::postgres::PgRow, column: T) -> libs::responder::Result<#node>
+            /// - `Err(responder::to(Self))` if the value cannot be extracted.
+            pub fn row<T>(value: &sqlx::postgres::PgRow, column: T) -> responder::Result<#node>
             where
                 T: ToString
             {
@@ -40,7 +40,7 @@ pub fn main(stream: TokenStream) -> TokenStream {
                     return Ok(d);
                 }
 
-                Err(libs::responder::to(#error))
+                Err(responder::to(#error))
             }
 
             /// Extracts a value of type `#node` from the specified column in a SQLx result containing a PostgreSQL row.
@@ -51,8 +51,8 @@ pub fn main(stream: TokenStream) -> TokenStream {
             ///
             /// # Returns
             /// - `Ok(Self)` if the row exists and the value is successfully extracted.
-            /// - `Err(libs::responder::to(Self))` if the row does not exist or the value cannot be extracted.
-            pub fn result<T>(value: sqlx::Result<sqlx::postgres::PgRow>, column: T) -> libs::responder::Result<#node>
+            /// - `Err(responder::to(Self))` if the row does not exist or the value cannot be extracted.
+            pub fn result<T>(value: sqlx::Result<sqlx::postgres::PgRow>, column: T) -> responder::Result<#node>
             where
                 T: ToString
             {
@@ -60,7 +60,7 @@ pub fn main(stream: TokenStream) -> TokenStream {
                     return row(&d, column);
                 }
 
-                Err(libs::responder::to(#error))
+                Err(responder::to(#error))
             }
         }
 

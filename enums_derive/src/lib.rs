@@ -124,14 +124,14 @@ pub fn derive_enum_iter(input: TokenStream) -> TokenStream {
             }
         }
         
-        impl From<libs::nulls::Null<String>> for #ident {
-            fn from(value: libs::nulls::Null<String>) -> Self {
+        impl From<nulls::Null<String>> for #ident {
+            fn from(value: nulls::Null<String>) -> Self {
                 Self::from(value.take().unwrap_or_default())
             }
         }
         
-        impl From<libs::nulls::Null<&str>> for #ident {
-            fn from(value: libs::nulls::Null<&str>) -> Self {
+        impl From<nulls::Null<&str>> for #ident {
+            fn from(value: nulls::Null<&str>) -> Self {
                 Self::from(value.take().unwrap_or_default())
             }
         }
