@@ -219,12 +219,12 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
                 *self == Self::default()
             }
 
-            pub fn validate(&self) -> libs::responder::Result<()> {
+            pub fn validate(&self) -> responder::Result<()> {
                 if self.is_empty() {
                     return Ok(())
                 }
 
-                Err(libs::responder::to(self))
+                Err(responder::to(self))
             }
         }
 
