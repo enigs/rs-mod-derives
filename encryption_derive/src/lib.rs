@@ -140,7 +140,7 @@ fn derive(stream: TS2) -> deluxe::Result<TS2> {
     token.extend(quote::quote! {
         #(
             pub fn #all_attributed_fields() -> #all_attributed_inner_types {
-                clone().#all_attributed_fields.take().unwrap_or_default()
+                crate::clone().#all_attributed_fields.take().unwrap_or_default()
             }
         )*
 
